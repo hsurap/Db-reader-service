@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DB Reader</title>
+<link rel="stylesheet" href="/styles.css" />
+<link rel="icon" href="data:,">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">db-reader</span>
+      <span class="brand-sub">read-only query console</span>
+    </div>
+    <div class="conn">
+      <span id="connDot" class="dot dot-off"></span>
+      <span id="connLabel" class="conn-label">not connected</span>
+      <input id="apiKeyInput" type="password" placeholder="API key" autocomplete="off" />
+      <button id="connectBtn" class="btn btn-primary">Connect</button>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <span>Databases</span>
+        <button id="refreshBtn" class="icon-btn" title="Refresh">&#8635;</button>
+      </div>
+      <div id="dbTree" class="db-tree">
+        <div class="empty-hint">Connect to load databases.</div>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <div id="emptyState" class="empty-state">
+        <p>Select a collection on the left to start querying.</p>
+      </div>
+
+      <div id="workspace" class="workspace hidden">
+
+        <div class="path-bar">
+          <span id="pathDb" class="path-db"></span>
+          <span class="path-sep">/</span>
+          <span id="pathColl" class="path-coll"></span>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="find">Find</button>
+          <button class="tab-btn" data-tab="aggregate">Aggregate</button>
+          <button class="tab-btn" data-tab="count">Count</button>
+        </div>
+
+        <section class="tab-panel" data-panel="find">
+          <div class="field-row">
+            <label>Filter</label>
+            <textarea id="findFilter" class="editor" rows="4">{}</textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field-col">
+              <label>Projection</label>
+              <textarea id="findProjection" class="editor" rows="3" placeholder="optional"></textarea>
+            </div>
+            <div class="field-col">
+              <label>Sort</label>
+              <textarea id="findSort" class="editor" rows="3" placeholder="optional"></textarea>
+            </div>
+          </div>
+          <div class="field-inline">
+            <div>
+              <label>Limit</label>
+              <input id="findLimit" type="number" min="1" placeholder="200" />
+            </div>
+            <div>
+              <label>Skip</label>
+              <input id="findSkip" type="number" min="0" placeholder="0" />
+            </div>
+            <button id="findRun" class="btn btn-accent">Run find</button>
+          </div>
+        </section>
+
+        <section class="tab-panel hidden" data-panel="aggregate">
+          <div class="field-row">
+            <label>Pipeline (array of stages)</label>
+            <textarea id="aggPipeline" class="editor" rows="8">[
+  { "$match": {} }
+]</textarea>
+          </div>
+          <div class="field-inline">
+            <div>
+              <label>Limit</label>
+              <input id="aggLimit" type="number" min="1" placeholder="200" />
+            </div>
+            <button id="aggRun" class="btn btn-accent">Run aggregate</button>
+          </div>
+        </section>
+
+        <section class="tab-panel hidden" data-panel="count">
+          <div class="field-row">
+            <label>Filter</label>
+            <textarea id="countFilter" class="editor" rows="4">{}</textarea>
+          </div>
+          <div class="field-inline">
+            <button id="countRun" class="btn btn-accent">Run count</button>
+          </div>
+        </section>
+
+        <div class="results-head">
+          <span id="resultsMeta" class="results-meta"></span>
+          <div class="results-actions">
+            <button id="viewJsonBtn" class="chip active">JSON</button>
+            <button id="viewTableBtn" class="chip">Table</button>
+            <button id="copyBtn" class="icon-btn" title="Copy results">&#128203;</button>
+          </div>
+        </div>
+        <div id="resultsBox" class="results-box">
+          <pre id="resultsJson" class="results-json"></pre>
+          <div id="resultsTable" class="results-table hidden"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

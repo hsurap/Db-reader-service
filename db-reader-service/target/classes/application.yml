@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+mongodb:
+  # Option A: one full connection string. If set, this wins outright.
+  uri: mongodb://10.242.196.55:27017
+
+#  # Option B: separate pieces, if that's what you have. Used only when MONGO_URI is blank.
+#  host: 10.242.196.55:27017
+#  username: ${MONGO_USERNAME:}
+#  password: ${MONGO_PASSWORD:}
+#  replica-set: ${MONGO_REPLICA_SET:}
+#  auth-source: ${MONGO_AUTH_SOURCE:admin}
+#
+#  default-max-limit: ${DEFAULT_MAX_LIMIT:200}
+#  hard-max-limit: ${HARD_MAX_LIMIT:1000}
+#  query-timeout-ms: ${QUERY_TIMEOUT_MS:15000}
+#
+security:
+  # Required. Clients (including the UI) must send this in the X-API-KEY header.
+  api-key: 123456789
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
